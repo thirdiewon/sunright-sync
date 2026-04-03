@@ -182,7 +182,7 @@ function signIn() {
   }
   var client = google.accounts.oauth2.initTokenClient({
     client_id: clientId,
-    scope: 'https://www.googleapis.com/auth/calendar.events',
+    scope: 'https://www.googleapis.com/auth/calendar.events https://www.googleapis.com/auth/calendar.readonly',
     callback: function(resp) {
       if (resp.error) {
         setAuthStatus('Sign-in failed: ' + resp.error, false);
