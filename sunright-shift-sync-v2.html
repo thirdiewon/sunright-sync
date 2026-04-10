@@ -182,7 +182,7 @@ function signIn() {
   }
   var client = google.accounts.oauth2.initTokenClient({
     client_id: clientId,
-    scope: 'https://www.googleapis.com/auth/calendar.events https://www.googleapis.com/auth/calendar.readonly',
+    scope: 'https://www.googleapis.com/auth/calendar',
     callback: function(resp) {
       if (resp.error) {
         setAuthStatus('Sign-in failed: ' + resp.error, false);
@@ -421,8 +421,8 @@ async function createEvent(idx) {
   updateShiftStatus(idx, 'syncing');
   var s = parsedShifts[idx];
   try {
-    var calId = encodeURIComponent(getSelectedCalendarId());
-    var resp = await fetch('https://www.googleapis.com/calendar/v3/calendars/'+calId+'/events', {
+    var calId = getSelectedCalendarId();
+    var resp = await fetch('https://www.googleapis.com/calendar/v3/calendars/'+encodeURIComponent(calId)+'/events', {
       method: 'POST',
       headers: {
         'Authorization': 'Bearer '+TOKEN,
