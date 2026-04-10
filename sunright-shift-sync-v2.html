@@ -397,11 +397,19 @@ function getTimeZone() {
 function buildEvent(s) {
   var tz = getTimeZone();
   var title = s.roles.length ? 'Sunright - '+s.roles.join(', ') : 'Sunright shift';
+  // if end time is earlier than start time, the shift crosses midnight — end date is next day
+  var endDate = s.date;
+  var startMins = s.startH * 60 + s.startMin;
+  var endMins = s.endH * 60 + s.endMin;
+  if (endMins <= startMins) {
+    endDate = new Date(s.date);
+    endDate.setDate(endDate.getDate() + 1);
+  }
   return {
     summary: title,
     location: 'Sunright Tea Studio',
-    start: { dateTime: toRFC3339(s.date, s.startH, s.startMin), timeZone: tz },
-    end:   { dateTime: toRFC3339(s.date, s.endH,   s.endMin),   timeZone: tz }
+    start: { dateTime: toRFC3339(s.date,  s.startH, s.startMin), timeZone: tz },
+    end:   { dateTime: toRFC3339(endDate, s.endH,   s.endMin),   timeZone: tz }
   };
 }
 
