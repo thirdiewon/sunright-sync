@@ -364,7 +364,7 @@ function renderShifts() {
       +   (s.roles.length?'<div class="roles">'+badges+'</div>':'')
       + '</div>'
       + '<span class="status-badge '+s.status+'">'+statusLabel+'</span>'
-      + '<button class="delete-btn" onclick="removeShift('"+idx+"')" title="Remove shift">&#x2715;</button>'
+      + '<button class="delete-btn" onclick="removeShift('+idx+')" title="Remove shift">&#x2715;</button>'
       + '</div>';
   });
   out.innerHTML = html;
