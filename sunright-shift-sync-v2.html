@@ -414,6 +414,15 @@ function getTimeZone() {
   try { return Intl.DateTimeFormat().resolvedOptions().timeZone; } catch(e) { return 'America/Los_Angeles'; }
 }
 
+function endDate(s) {
+  // if end hour is earlier than start hour, the shift crosses midnight — add 1 day
+  var d = new Date(s.date);
+  if (s.endH < s.startH || (s.endH === s.startH && s.endMin < s.startMin)) {
+    d.setDate(d.getDate() + 1);
+  }
+  return d;
+}
+
 function buildEvent(s) {
   var tz = getTimeZone();
   var title = s.roles.length ? 'Sunright - '+s.roles.join(', ') : 'Sunright shift';
@@ -421,7 +430,7 @@ function buildEvent(s) {
     summary: title,
     location: 'Sunright Tea Studio',
     start: { dateTime: toRFC3339(s.date, s.startH, s.startMin), timeZone: tz },
-    end:   { dateTime: toRFC3339(s.date, s.endH,   s.endMin),   timeZone: tz }
+    end:   { dateTime: toRFC3339(endDate(s), s.endH, s.endMin), timeZone: tz }
   };
 }
 
