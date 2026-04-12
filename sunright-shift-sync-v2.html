@@ -280,15 +280,20 @@ function isDateLine(l) {
       && /\b(january|february|march|april|may|june|july|august|september|october|november|december|jan|feb|mar|apr|jun|jul|aug|sep|oct|nov|dec)\b/i.test(l);
 }
 
+function isBreakLine(l) {
+  return /^\d+\s*min/i.test(l) || /^break/i.test(l);
+}
 function isTimeLine(l) {
+  if (isBreakLine(l)) return false;
   return /\d{1,2}:?\d{0,2}\s*(?:AM|PM)\s*[\u2014\u2013\-]\s*\d{1,2}:?\d{0,2}\s*(?:AM|PM)/i.test(l);
 }
 function isStartTimeLine(l) {
+  if (isBreakLine(l)) return false;
   return /^\d{1,2}:?\d{0,2}\s*(?:AM|PM)\s*(\d+h\d*m?)?\s*$/i.test(l);
 }
 function isDashLine(l) { return /^[\u2014\u2013\-]+$/.test(l.trim()); }
 function isEndTimeLine(l) { return /^\d{1,2}:?\d{0,2}\s*(?:AM|PM)/i.test(l); }
-function isJunk(l) { return /^\d+\s*shifts?$/i.test(l)||/^\d+h\d*m?$/i.test(l); }
+function isJunk(l) { return /^\d+\s*shifts?$/i.test(l)||/^\d+h\d*m?$/i.test(l)||isBreakLine(l); }
 
 function extractTimes(l) {
   var clean = l.replace(/(AM|PM)\d+h\d*m?/gi,'$1').replace(/\d+h\d*m?\s*$/i,'').trim();
