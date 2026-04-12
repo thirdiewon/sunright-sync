@@ -331,8 +331,9 @@ function parseShifts(raw) {
       }
       if (times && times.start && times.end) {
         var roles=[], j=nextI;
-        while (j<lines.length && !isDateLine(lines[j]) && !isTimeLine(lines[j]) && !isStartTimeLine(lines[j]) && !isJunk(lines[j])) {
-          roles.push(lines[j]); j++;
+        while (j<lines.length && !isDateLine(lines[j]) && !isTimeLine(lines[j]) && !isStartTimeLine(lines[j])) {
+          if (!isJunk(lines[j])) roles.push(lines[j]);
+          j++;
         }
         shifts.push({date:new Date(currentDate), startH:times.start.h, startMin:times.start.min, endH:times.end.h, endMin:times.end.min, roles:roles, status:'pending'});
         i=j; continue;
